@@ -12,7 +12,7 @@ namespace AcumaticaValidations
     using System;
     using System.Collections.Generic;
     
-    public partial class Log
+    public partial class Other
     {
         public long Id { get; set; }
         public Nullable<System.Guid> ProcGUID { get; set; }

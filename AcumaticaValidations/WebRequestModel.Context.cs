@@ -10,25 +10,24 @@
 namespace AcumaticaValidations
 {
     using System;
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity;
-    using System.Data.Entity.Core.Metadata.Edm;
     using System.Data.Entity.Infrastructure;
     
     public partial class WebRequestEntities : DbContext
     {
-        public WebRequestEntities(string connectionString)
-            : base(connectionString)
+        public WebRequestEntities(string name)
+            : base(name)
         {
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-          
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Other> Other { get; set; }
+        public virtual DbSet<RestAPI> RestAPIs { get; set; }
+        public virtual DbSet<OData> ODatas { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
-        //public virtual DbSet<Log> Log1 { get; set; }
     }
 }

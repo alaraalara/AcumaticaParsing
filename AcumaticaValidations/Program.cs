@@ -23,13 +23,14 @@ namespace AcumaticaValidations
 
             WebRequestEntities context = new WebRequestEntities("name=AcuProx");
             Log log;
+
+            /*
             using (context)
             {
             
                 Console.WriteLine(context.Database.Exists());
                 Console.WriteLine(validations.Database.Exists());
 
-                
                 var odata = context.Logs.SqlQuery("Select * from Log where Path like '%/odata/%'").ToList<Log>();
                 foreach (Log logOdata in odata)
                 {
@@ -42,17 +43,25 @@ namespace AcumaticaValidations
                 foreach(var validatedData in validations.Logs)
                 {
                     Console.WriteLine(validatedData.Headers);
-                }
-
-               
+                }               
 
             }
 
-            
+            */
 
-            }
+            Validation example = new Validation(context, validations);
+            example.parseData();
+            example.writeData();
 
-    
+          
+
+
+
+
+
         }
+
+
+    }
     }
 
