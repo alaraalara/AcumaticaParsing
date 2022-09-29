@@ -29,5 +29,6 @@ namespace AcumaticaValidations
         public virtual DbSet<RestAPI> RestAPIs { get; set; }
         public virtual DbSet<OData> ODatas { get; set; }
         public virtual DbSet<Log> Logs { get; set; }
+        public virtual DbSet<OAuth> OAuths { get; set; }
     }
 }

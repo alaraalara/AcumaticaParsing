@@ -22,13 +22,31 @@
           <Property Name="DT" Type="datetime" />
           <Property Name="Duration" Type="time" Precision="3" />
         </EntityType>
+        <EntityType Name="OAuth">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProcGUID" Type="uniqueidentifier" />
+          <Property Name="EventType" Type="smallint" />
+          <Property Name="Host" Type="nvarchar" MaxLength="128" />
+          <Property Name="Path" Type="nvarchar" MaxLength="512" />
+          <Property Name="QueryString" Type="nvarchar" MaxLength="1024" />
+          <Property Name="Headers" Type="varchar(max)" />
+          <Property Name="Cookies" Type="nvarchar" MaxLength="2048" />
+          <Property Name="Body" Type="nvarchar(max)" />
+          <Property Name="StatusCode" Type="varchar" MaxLength="4" />
+          <Property Name="DT" Type="datetime" />
+          <Property Name="Duration" Type="time" Precision="3" />
+        </EntityType>
         <EntityType Name="OData">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProcGUID" Type="uniqueidentifier" />
           <Property Name="TypeOfWebService" Type="nchar" MaxLength="10" />
-          <Property Name="IsAcumaticaRequest" Type="smallint" />
+          <Property Name="IsAcumaticaRequest" Type="int" />
           <Property Name="TypeOfRequest" Type="smallint" />
           <Property Name="SiteURL" Type="nvarchar" MaxLength="512" />
           <Property Name="SessionID" Type="nvarchar" MaxLength="2048" />
@@ -36,6 +54,8 @@
           <Property Name="GIName" Type="nvarchar" MaxLength="512" />
           <Property Name="DACName" Type="nvarchar" MaxLength="512" />
           <Property Name="Filters" Type="nvarchar" MaxLength="512" />
+          <Property Name="Skip" Type="nvarchar" MaxLength="512" />
+          <Property Name="Top" Type="nvarchar" MaxLength="512" />
           <Property Name="Select" Type="nvarchar" MaxLength="512" />
           <Property Name="Sorting" Type="nvarchar" MaxLength="512" />
           <Property Name="Expands" Type="nvarchar" MaxLength="512" />
@@ -44,6 +64,7 @@
           <Property Name="AccessScope" Type="nvarchar" MaxLength="1024" />
           <Property Name="NumberOfDetails" Type="smallint" />
           <Property Name="Duration" Type="time" Precision="3" />
+          <Property Name="Path" Type="nvarchar" MaxLength="512" />
         </EntityType>
         <EntityType Name="Other">
           <Key>
@@ -67,14 +88,19 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProcGUID" Type="uniqueidentifier" />
           <Property Name="TypeOfWebService" Type="nchar" MaxLength="10" />
-          <Property Name="IsAcumaticaRequest" Type="smallint" />
+          <Property Name="IsAcumaticaRequest" Type="int" />
           <Property Name="TypeOfRequest" Type="smallint" />
           <Property Name="SiteURL" Type="nvarchar" MaxLength="512" />
           <Property Name="SessionID" Type="nvarchar" MaxLength="2048" />
           <Property Name="AuthenticationType" Type="nvarchar" MaxLength="2048" />
+          <Property Name="KeyField" Type="nvarchar" MaxLength="2048" />
           <Property Name="Filters" Type="nvarchar" MaxLength="512" />
           <Property Name="Select" Type="nvarchar" MaxLength="512" />
+          <Property Name="Custom" Type="nvarchar" MaxLength="512" />
+          <Property Name="Skip" Type="nchar" MaxLength="10" />
+          <Property Name="Top" Type="nvarchar" MaxLength="512" />
           <Property Name="Expands" Type="nvarchar" MaxLength="512" />
           <Property Name="EndpointName" Type="nvarchar" MaxLength="512" />
           <Property Name="EndpointVersion" Type="nvarchar" MaxLength="50" />
@@ -85,9 +111,11 @@
           <Property Name="NumberOfDetails" Type="nvarchar(max)" />
           <Property Name="Duration" Type="time" Precision="3" />
           <Property Name="DocumentID" Type="nvarchar" MaxLength="200" />
+          <Property Name="Path" Type="nvarchar" MaxLength="512" />
         </EntityType>
         <EntityContainer Name="WebRequestModelStoreContainer">
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OAuth" EntityType="Self.OAuth" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OData" EntityType="Self.OData" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Other" EntityType="Self.Other" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RestAPI" EntityType="Self.RestAPI" Schema="dbo" store:Type="Tables" />
@@ -101,6 +129,7 @@
           <EntitySet Name="RestAPIs" EntityType="WebRequestModel.RestAPI" />
           <EntitySet Name="ODatas" EntityType="WebRequestModel.OData" />
           <EntitySet Name="Logs" EntityType="WebRequestModel.Log" />
+          <EntitySet Name="OAuths" EntityType="WebRequestModel.OAuth" />
         </EntityContainer>
         <EntityType Name="Other">
           <Key>
@@ -142,6 +171,12 @@
           <Property Name="NumberOfDetails" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Duration" Type="Time" Precision="3" />
           <Property Name="DocumentID" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="KeyField" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="Custom" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Skip" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="Top" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Path" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="ProcGUID" Type="Guid" />
         </EntityType>
         <EntityType Name="OData">
           <Key>
@@ -165,12 +200,33 @@
           <Property Name="AccessScope" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
           <Property Name="NumberOfDetails" Type="Int16" />
           <Property Name="Duration" Type="Time" Precision="3" />
+          <Property Name="ProcGUID" Type="Guid" />
+          <Property Name="Skip" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Top" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Path" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Log">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int64" Nullable="false" />
+          <Property Name="ProcGUID" Type="Guid" />
+          <Property Name="EventType" Type="Int16" />
+          <Property Name="Host" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Path" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="QueryString" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="Headers" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="Cookies" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="StatusCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="DT" Type="DateTime" Precision="3" />
+          <Property Name="Duration" Type="Time" Precision="3" />
+        </EntityType>
+        <EntityType Name="OAuth">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProcGUID" Type="Guid" />
           <Property Name="EventType" Type="Int16" />
           <Property Name="Host" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
@@ -210,6 +266,12 @@
           <EntitySetMapping Name="RestAPIs">
             <EntityTypeMapping TypeName="WebRequestModel.RestAPI">
               <MappingFragment StoreEntitySet="RestAPI">
+                <ScalarProperty Name="ProcGUID" ColumnName="ProcGUID" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="Top" ColumnName="Top" />
+                <ScalarProperty Name="Skip" ColumnName="Skip" />
+                <ScalarProperty Name="Custom" ColumnName="Custom" />
+                <ScalarProperty Name="KeyField" ColumnName="KeyField" />
                 <ScalarProperty Name="DocumentID" ColumnName="DocumentID" />
                 <ScalarProperty Name="Duration" ColumnName="Duration" />
                 <ScalarProperty Name="NumberOfDetails" ColumnName="NumberOfDetails" />
@@ -235,6 +297,10 @@
           <EntitySetMapping Name="ODatas">
             <EntityTypeMapping TypeName="WebRequestModel.OData">
               <MappingFragment StoreEntitySet="OData">
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="Top" ColumnName="Top" />
+                <ScalarProperty Name="Skip" ColumnName="Skip" />
+                <ScalarProperty Name="ProcGUID" ColumnName="ProcGUID" />
                 <ScalarProperty Name="Duration" ColumnName="Duration" />
                 <ScalarProperty Name="NumberOfDetails" ColumnName="NumberOfDetails" />
                 <ScalarProperty Name="AccessScope" ColumnName="AccessScope" />
@@ -259,6 +325,24 @@
           <EntitySetMapping Name="Logs">
             <EntityTypeMapping TypeName="WebRequestModel.Log">
               <MappingFragment StoreEntitySet="Log">
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="DT" ColumnName="DT" />
+                <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="Cookies" ColumnName="Cookies" />
+                <ScalarProperty Name="Headers" ColumnName="Headers" />
+                <ScalarProperty Name="QueryString" ColumnName="QueryString" />
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="Host" ColumnName="Host" />
+                <ScalarProperty Name="EventType" ColumnName="EventType" />
+                <ScalarProperty Name="ProcGUID" ColumnName="ProcGUID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OAuths">
+            <EntityTypeMapping TypeName="WebRequestModel.OAuth">
+              <MappingFragment StoreEntitySet="OAuth">
                 <ScalarProperty Name="Duration" ColumnName="Duration" />
                 <ScalarProperty Name="DT" ColumnName="DT" />
                 <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />

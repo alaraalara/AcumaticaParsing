@@ -9,6 +9,7 @@
         <EntityTypeShape EntityType="WebRequestModel.RestAPI" Width="1.5" PointX="7.75" PointY="0.625" />
         <EntityTypeShape EntityType="WebRequestModel.OData" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="WebRequestModel.Log" Width="1.5" PointX="0.625" PointY="1.25" />
+        <EntityTypeShape EntityType="WebRequestModel.OAuth" Width="1.5" PointX="0.75" PointY="7.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

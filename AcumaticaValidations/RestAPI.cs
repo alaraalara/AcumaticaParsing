@@ -33,5 +33,11 @@ namespace AcumaticaValidations
         public string NumberOfDetails { get; set; }
         public Nullable<System.TimeSpan> Duration { get; set; }
         public string DocumentID { get; set; }
+        public string KeyField { get; set; }
+        public string Custom { get; set; }
+        public string Skip { get; set; }
+        public string Top { get; set; }
+        public string Path { get; set; }
+        public Nullable<System.Guid> ProcGUID { get; set; }
     }
 }

@@ -48,10 +48,8 @@ namespace AcumaticaValidations
             }
 
             */
-
             Validation example = new Validation(context, validations);
-            example.parseData();
-            example.writeData();
+            example.ParseAndWriteData();
 
           
 

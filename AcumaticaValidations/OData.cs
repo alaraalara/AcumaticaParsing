@@ -32,5 +32,9 @@ namespace AcumaticaValidations
         public string AccessScope { get; set; }
         public Nullable<short> NumberOfDetails { get; set; }
         public Nullable<System.TimeSpan> Duration { get; set; }
+        public Nullable<System.Guid> ProcGUID { get; set; }
+        public string Skip { get; set; }
+        public string Top { get; set; }
+        public string Path { get; set; }
     }
 }
