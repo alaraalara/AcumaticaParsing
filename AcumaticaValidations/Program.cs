@@ -17,41 +17,36 @@ namespace AcumaticaValidations
     {
         static void Main(string[] args)
         {
-            WebRequestEntities validations = new WebRequestEntities("name=Validations");
-           
-            Log odataLogs;
 
-            WebRequestEntities context = new WebRequestEntities("name=AcuProx");
-            Log log;
+            var watch = System.Diagnostics.Stopwatch.StartNew();
 
-            /*
-            using (context)
-            {
-            
-                Console.WriteLine(context.Database.Exists());
-                Console.WriteLine(validations.Database.Exists());
 
-                var odata = context.Logs.SqlQuery("Select * from Log where Path like '%/odata/%'").ToList<Log>();
-                foreach (Log logOdata in odata)
-                {
-                   
-                    validations.Logs.Add(logOdata);
-                    
-                    validations.SaveChanges();
-                }
-                //check if it has been added!
-                foreach(var validatedData in validations.Logs)
-                {
-                    Console.WriteLine(validatedData.Headers);
-                }               
 
-            }
 
-            */
-            Validation example = new Validation(context, validations);
+            Validation example = new Validation("name=AcuProx", "name=Validations");
+            example.ClearData(true, true, true, true);
             example.ParseAndWriteData();
+            
+            Console.WriteLine("finished parsing!");
 
-          
+            Console.WriteLine("odata validations started");
+            //example.ValidateOData();
+            
+            Console.WriteLine("rest validations started");
+            example.ValidateRestAPI();
+
+            watch.Stop();
+            var elapsedMs = watch.ElapsedMilliseconds;
+            Console.WriteLine(elapsedMs);
+
+
+
+
+
+
+
+
+
 
 
 

@@ -15,14 +15,19 @@ namespace AcumaticaValidations
     public partial class RestAPI
     {
         public long Id { get; set; }
+        public Nullable<System.Guid> ProcGUID { get; set; }
         public string TypeOfWebService { get; set; }
-        public Nullable<short> IsAcumaticaRequest { get; set; }
+        public Nullable<int> IsAcumaticaRequest { get; set; }
         public Nullable<short> TypeOfRequest { get; set; }
         public string SiteURL { get; set; }
         public string SessionID { get; set; }
         public string AuthenticationType { get; set; }
+        public string KeyField { get; set; }
         public string Filters { get; set; }
         public string Select { get; set; }
+        public string Custom { get; set; }
+        public string Skip { get; set; }
+        public string Top { get; set; }
         public string Expands { get; set; }
         public string EndpointName { get; set; }
         public string EndpointVersion { get; set; }
@@ -30,14 +35,9 @@ namespace AcumaticaValidations
         public string ErrorCode { get; set; }
         public string ErrorMessage { get; set; }
         public string AccessScope { get; set; }
-        public string NumberOfDetails { get; set; }
+        public Nullable<short> NumberOfDetails { get; set; }
         public Nullable<System.TimeSpan> Duration { get; set; }
         public string DocumentID { get; set; }
-        public string KeyField { get; set; }
-        public string Custom { get; set; }
-        public string Skip { get; set; }
-        public string Top { get; set; }
         public string Path { get; set; }
-        public Nullable<System.Guid> ProcGUID { get; set; }
     }
 }
