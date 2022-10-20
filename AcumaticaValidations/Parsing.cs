@@ -215,7 +215,6 @@ namespace AcumaticaValidations
             restapi.Custom = getParameters(data, "custom");
             restapi.Skip = getParameters(data, "skip");
             restapi.Top = getParameters(data, "top");
-            //ADD those 6 parameters to the table, onyl for REST table!
             RestComposeEndpointAndKeyField(restapi, data.Path);
             
             if(data.StatusCode != null && Int16.Parse(data.StatusCode) > 400) 
@@ -370,6 +369,7 @@ namespace AcumaticaValidations
         }
        
         
+        //token part: bearer 
         private string ComposeSessionID(Log data)
         {
             if (data.Cookies.Contains("ASP.NET"))
@@ -462,7 +462,7 @@ namespace AcumaticaValidations
         {
             if(odata != null)
             {
-                if (data.Headers.Contains("token"))
+                if (data.Headers.Contains("Bearer"))
                 {
                     return "OAuth";
                 }

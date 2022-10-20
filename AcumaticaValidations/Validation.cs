@@ -9,6 +9,7 @@ namespace AcumaticaValidations
 {
     public partial class Validation
     {
+        //Check for repeated request???
         public void ValidateOData()
         {
             using (var web = new WebRequestEntities(databaseWriteString))
@@ -114,12 +115,14 @@ namespace AcumaticaValidations
                 AcceptedEndpoints.Add("manufacturing");
                 AcceptedEndpoints.Add("devicehub");
                 AcceptedEndpoints.Add("pos");
+                /*
                 //Getting error here!
                 bool validEndpoint = web.RestAPIs.Any(data => !AcceptedEndpoints.Contains(data.EndpointName, StringComparer.OrdinalIgnoreCase));
                 if (validEndpoint)
                 {
                     Console.WriteLine(" the body should contain either ID or full set of keys for the document.");
                 }
+                */
             }
         }
 
