@@ -13,7 +13,6 @@ using System.Xml.Linq;
 
 namespace AcumaticaValidations
 {
-    //DOCUMENT ID Is Missing!
     public partial class Parsing
     {
         private string databaseReadString;

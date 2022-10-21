@@ -46,13 +46,13 @@ namespace AcumaticaValidations
         }
 
 
-        //DOES NOT WORK!
+        //TEST IT!
         private string GetDocumentID(Log data)
         {
-            if (data.Body != null && data.Body.Contains("id:"))
+            if (data.EventType == 2 && data.Body!=null && data.Body.Contains("\"id:\""))
             {
-                var stringStartWithSessionID = data.Cookies.Substring(data.Cookies.IndexOf("id:"));
-                var splitString = stringStartWithSessionID.Split('{'); //Assuming it is always at the end 
+                var stringStartWithSessionID = data.Cookies.Substring(data.Cookies.IndexOf("\"id:\""));
+                var splitString = stringStartWithSessionID.Split(','); //Assuming it is always at the end 
                 return splitString[0];
             }
             else
