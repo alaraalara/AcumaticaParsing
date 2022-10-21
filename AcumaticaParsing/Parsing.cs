@@ -18,10 +18,13 @@ namespace AcumaticaValidations
     {
         private string databaseReadString;
         private string databaseWriteString;
-        
+        private List<OData> ODataList = new List<OData>();
+        private List<RestAPI> RestApiList = new List<RestAPI>();
+        private List<OAuth> OAuthList = new List<OAuth>();
+        private List<Log> OtherList = new List<Log>();
 
 
-       
+
         public Parsing(string DatabaseToRead, string DatabaseToWrite)
         {
             this.databaseReadString = DatabaseToRead;
@@ -30,112 +33,147 @@ namespace AcumaticaValidations
 
         public void ParseAndWriteData()
         {
-            List<OData> ODataList = new List<OData>();
-            List<RestAPI> RestApiList = new List<RestAPI>();
-            List<OAuth> OAuthList = new List<OAuth>();
-            List<Log> OtherList = new List<Log>();
+            
+            WebRequestEntities databaseWrite = null;
 
-            using (var databaseRead = new WebRequestEntities(databaseReadString))
+            using (var databaseRead = new WebRequestEntities(databaseReadString)) 
             {
                 //Check if database exists
                 if (databaseRead.Database.Exists() == false)
                 {
                     throw new Exception("Database to read does not exist");
                 }
-                using (var databaseWrite = new WebRequestEntities(databaseWriteString))
+                try 
                 {
+                    databaseWrite = new WebRequestEntities(databaseWriteString);
+                    databaseWrite.Configuration.AutoDetectChangesEnabled = false;
+                    int count = 0;
+
                     if (databaseWrite.Database.Exists() == false)
                     {
                         throw new Exception("Database to write does not exist");
                     }
-                    foreach (var data in databaseRead.Logs.AsNoTracking().Take(10000))
+                   
+                    foreach (var data in databaseRead.Logs.AsNoTracking())
                     {
+                        count++;
+                        databaseWrite = RefreshContext(databaseWrite, count);
                         if (data.Path != null)
                         {
-                            if (data.Path.Contains("odata"))
-                            {
-                                OData odata = CreateOData(data);
-                                ODataList.Add(odata);
-                                databaseWrite.ODatas.Add(odata);
-                                
-                                
-                            }
-                            if (data.Path.Contains("entity") && !data.Path.Contains("identity")) //if body starts with <, it is soap!
-                            {
-                                if (data.Body == null)
-                                {
-                                    RestAPI restapi = CreateRestAPI(data);
-                                    RestApiList.Add(restapi);
-                                    databaseWrite.RestAPIs.Add(restapi);
-                                    
-                                }
-
-                                if (data.Body.ToCharArray().Length > 1 && data.Body.ToCharArray()[0] != '<')
-                                {
-                                    RestAPI restapi = CreateRestAPI(data);
-                                    RestApiList.Add(restapi);
-                                    databaseWrite.RestAPIs.Add(restapi);
-                                }
-
-                            }
-                            //What should be the specific fields for that????
-                            if (data.Path.Contains("identity"))
-                            {                         
-                                OAuth oauth = CreateOAuth(data);
-                                OAuthList.Add(oauth);
-                                databaseWrite.OAuths.Add(oauth);
-                      
-                            }
-                            else
-                            {
-                                OtherList.Add(data);
-
-                            }
+                            ParseNonNullPath(databaseWrite, data);
                         }
                         else
                         {
-                            //For requests:
-                            //when response is found, it should remove its requst (otherwise has exponential growth as it goes towards the end of the list)
-                            var odataRequest = ODataList.Where(d => d.ProcGUID == data.ProcGUID);
-                            
-                            var restRequest = RestApiList.Where(d => d.ProcGUID == data.ProcGUID);
-                            
-                            var oauthRequest = OAuthList.Where(d => d.ProcGUID == data.ProcGUID);
-                           
-                            if (odataRequest.Any())
-                            {
-                                OData odata = CreateOData(data);
-                                databaseWrite.ODatas.Add(odata);
-                                ODataList.Remove(odataRequest.ElementAt(0));
-                                
-                            }
-                            if (restRequest.Any())
-                            {
-                                RestAPI restapi = CreateRestAPI(data);
-                                databaseWrite.RestAPIs.Add(restapi);
-                                RestApiList.Remove(restRequest.ElementAt(0));
-                                
-                            }
-                            if (oauthRequest.Any())
-                            {
-                                OAuth oauth = CreateOAuth(data);
-                                databaseWrite.OAuths.Add(oauth);
-                                OAuthList.Remove(oauthRequest.ElementAt(0));
-                            }
-                            else
-                            {
-                                OtherList.Add(data);
-                            }
-
+                            ParseNullPath(databaseWrite, data);
                         }
                     }
-                    Console.WriteLine(RestApiList.Count());
-                    databaseWrite.Logs.AddRange(OtherList);                    
+                    //databaseWrite.Logs.AddRange(OtherList);                    
                     databaseWrite.SaveChanges();
+                }
+                finally {
+                    databaseWrite.Dispose();
                 }
             }
         }
- 
+
+        //In order to improve performance and run out of storage (Save and dispose is called every 100 request)
+        private WebRequestEntities RefreshContext(WebRequestEntities context, int count)
+        {
+
+            if (count % 100 == 0)
+            {
+                context.SaveChanges();
+                context.Dispose();
+                context = new WebRequestEntities(databaseWriteString);
+                context.Configuration.AutoDetectChangesEnabled = false;
+            }
+
+            return context;
+        }
+
+        private void ParseNonNullPath(WebRequestEntities databaseWrite, Log data)
+        {
+            if (data.Path.Contains("odata"))
+            {
+                OData odata = CreateOData(data);
+                ODataList.Add(odata);
+                databaseWrite.ODatas.Add(odata);
+
+
+            }
+            if (data.Path.Contains("entity") && !data.Path.Contains("identity")) //if body starts with <, it is soap!
+            {
+                if (data.Body == null)
+                {
+                    RestAPI restapi = CreateRestAPI(data);
+                    RestApiList.Add(restapi);
+                    databaseWrite.RestAPIs.Add(restapi);
+
+                }
+
+                if (data.Body.ToCharArray().Length > 1 && data.Body.ToCharArray()[0] != '<')
+                {
+                    RestAPI restapi = CreateRestAPI(data);
+                    RestApiList.Add(restapi);
+                    databaseWrite.RestAPIs.Add(restapi);
+                }
+
+            }
+            //What should be the specific fields for that????
+            if (data.Path.Contains("identity"))
+            {
+                OAuth oauth = CreateOAuth(data);
+                OAuthList.Add(oauth);
+                databaseWrite.OAuths.Add(oauth);
+
+            }
+            else
+            {
+                OtherList.Add(data);
+                databaseWrite.Logs.Add(data);
+
+            }
+        }
+
+        private void ParseNullPath(WebRequestEntities databaseWrite, Log data)
+        {
+            //For requests:
+            //when response is found, it should remove its requst (otherwise has exponential growth as it goes towards the end of the list)
+            var odataRequest = ODataList.Where(d => d.ProcGUID == data.ProcGUID);
+
+            var restRequest = RestApiList.Where(d => d.ProcGUID == data.ProcGUID);
+
+            var oauthRequest = OAuthList.Where(d => d.ProcGUID == data.ProcGUID);
+
+            if (odataRequest.Any())
+            {
+                OData odata = CreateOData(data);
+                databaseWrite.ODatas.Add(odata);
+                ODataList.Remove(odataRequest.ElementAt(0));
+
+            }
+            if (restRequest.Any())
+            {
+                RestAPI restapi = CreateRestAPI(data);
+                databaseWrite.RestAPIs.Add(restapi);
+                RestApiList.Remove(restRequest.ElementAt(0));
+
+            }
+            if (oauthRequest.Any())
+            {
+                OAuth oauth = CreateOAuth(data);
+                databaseWrite.OAuths.Add(oauth);
+                OAuthList.Remove(oauthRequest.ElementAt(0));
+            }
+            else
+            {
+                OtherList.Add(data);
+                databaseWrite.Logs.Add(data);
+            }
+        }
+
+       
+
         //For testing purposes, prevents double entries. Reset database everytime parsin method is called!
         public void ClearData(bool log=false, bool odata=false, bool restapi=false, bool oauth = false)
         {
