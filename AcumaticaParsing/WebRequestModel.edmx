@@ -49,7 +49,6 @@
           <Property Name="IsAcumaticaRequest" Type="int" />
           <Property Name="TypeOfRequest" Type="smallint" />
           <Property Name="SiteURL" Type="nvarchar" MaxLength="512" />
-          <Property Name="SessionID" Type="nvarchar" MaxLength="2048" />
           <Property Name="AuthenticationType" Type="nvarchar" MaxLength="2048" />
           <Property Name="GIName" Type="nvarchar" MaxLength="512" />
           <Property Name="DACName" Type="nvarchar" MaxLength="512" />
@@ -65,23 +64,6 @@
           <Property Name="NumberOfDetails" Type="smallint" />
           <Property Name="Duration" Type="time" Precision="3" />
           <Property Name="Path" Type="nvarchar" MaxLength="512" />
-        </EntityType>
-        <EntityType Name="Other">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="ProcGUID" Type="uniqueidentifier" />
-          <Property Name="EventType" Type="smallint" />
-          <Property Name="Host" Type="nvarchar" MaxLength="128" />
-          <Property Name="Path" Type="nvarchar" MaxLength="512" />
-          <Property Name="QueryString" Type="nvarchar" MaxLength="1024" />
-          <Property Name="Headers" Type="varchar(max)" />
-          <Property Name="Cookies" Type="nvarchar" MaxLength="2048" />
-          <Property Name="Body" Type="nvarchar(max)" />
-          <Property Name="StatusCode" Type="varchar" MaxLength="4" />
-          <Property Name="DT" Type="datetime" />
-          <Property Name="Duration" Type="time" Precision="3" />
         </EntityType>
         <EntityType Name="RestAPI">
           <Key>
@@ -117,7 +99,6 @@
           <EntitySet Name="Log" EntityType="Self.Log" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OAuth" EntityType="Self.OAuth" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="OData" EntityType="Self.OData" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Other" EntityType="Self.Other" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RestAPI" EntityType="Self.RestAPI" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -125,56 +106,11 @@
     <edmx:ConceptualModels>
       <Schema Namespace="WebRequestModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="WebRequestEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Other" EntityType="WebRequestModel.Other" />
-          <EntitySet Name="ODatas" EntityType="WebRequestModel.OData" />
           <EntitySet Name="Logs" EntityType="WebRequestModel.Log" />
           <EntitySet Name="OAuths" EntityType="WebRequestModel.OAuth" />
           <EntitySet Name="RestAPIs" EntityType="WebRequestModel.RestAPI" />
+          <EntitySet Name="ODatas" EntityType="WebRequestModel.OData" />
         </EntityContainer>
-        <EntityType Name="Other">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="ProcGUID" Type="Guid" />
-          <Property Name="EventType" Type="Int16" />
-          <Property Name="Host" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
-          <Property Name="Path" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="QueryString" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Name="Headers" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <Property Name="Cookies" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
-          <Property Name="Body" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="StatusCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="DT" Type="DateTime" Precision="3" />
-          <Property Name="Duration" Type="Time" Precision="3" />
-        </EntityType>
-        <EntityType Name="OData">
-          <Key>
-            <PropertyRef Name="Id" />
-          </Key>
-          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TypeOfWebService" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
-          <Property Name="IsAcumaticaRequest" Type="Int16" />
-          <Property Name="TypeOfRequest" Type="Int16" />
-          <Property Name="SiteURL" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="SessionID" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
-          <Property Name="AuthenticationType" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
-          <Property Name="GIName" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="DACName" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-          <Property Name="Filters" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
-          <Property Name="Select" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
-          <Property Name="Sorting" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
-          <Property Name="Expands" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
-          <Property Name="ErrorCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
-          <Property Name="ErrorMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AccessScope" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
-          <Property Name="NumberOfDetails" Type="Int16" />
-          <Property Name="Duration" Type="Time" Precision="3" />
-          <Property Name="ProcGUID" Type="Guid" />
-          <Property Name="Skip" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
-          <Property Name="Top" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
-          <Property Name="Path" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
-        </EntityType>
         <EntityType Name="Log">
           <Key>
             <PropertyRef Name="Id" />
@@ -239,58 +175,38 @@
           <Property Name="DocumentID" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
           <Property Name="Path" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
         </EntityType>
+        <EntityType Name="OData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProcGUID" Type="Guid" />
+          <Property Name="TypeOfWebService" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="IsAcumaticaRequest" Type="Int32" />
+          <Property Name="TypeOfRequest" Type="Int16" />
+          <Property Name="SiteURL" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="AuthenticationType" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="GIName" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="DACName" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="Filters" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="Skip" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="Top" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="Select" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="Sorting" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="Expands" Type="String" MaxLength="2048" FixedLength="false" Unicode="true" />
+          <Property Name="ErrorCode" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="ErrorMessage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AccessScope" Type="String" MaxLength="1024" FixedLength="false" Unicode="true" />
+          <Property Name="NumberOfDetails" Type="Int16" />
+          <Property Name="Duration" Type="Time" Precision="3" />
+          <Property Name="Path" Type="String" MaxLength="512" FixedLength="false" Unicode="true" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="WebRequestModelStoreContainer" CdmEntityContainer="WebRequestEntities">
-          <EntitySetMapping Name="Other">
-            <EntityTypeMapping TypeName="WebRequestModel.Other">
-              <MappingFragment StoreEntitySet="Other">
-                <ScalarProperty Name="Duration" ColumnName="Duration" />
-                <ScalarProperty Name="DT" ColumnName="DT" />
-                <ScalarProperty Name="StatusCode" ColumnName="StatusCode" />
-                <ScalarProperty Name="Body" ColumnName="Body" />
-                <ScalarProperty Name="Cookies" ColumnName="Cookies" />
-                <ScalarProperty Name="Headers" ColumnName="Headers" />
-                <ScalarProperty Name="QueryString" ColumnName="QueryString" />
-                <ScalarProperty Name="Path" ColumnName="Path" />
-                <ScalarProperty Name="Host" ColumnName="Host" />
-                <ScalarProperty Name="EventType" ColumnName="EventType" />
-                <ScalarProperty Name="ProcGUID" ColumnName="ProcGUID" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="ODatas">
-            <EntityTypeMapping TypeName="WebRequestModel.OData">
-              <MappingFragment StoreEntitySet="OData">
-                <ScalarProperty Name="Path" ColumnName="Path" />
-                <ScalarProperty Name="Top" ColumnName="Top" />
-                <ScalarProperty Name="Skip" ColumnName="Skip" />
-                <ScalarProperty Name="ProcGUID" ColumnName="ProcGUID" />
-                <ScalarProperty Name="Duration" ColumnName="Duration" />
-                <ScalarProperty Name="NumberOfDetails" ColumnName="NumberOfDetails" />
-                <ScalarProperty Name="AccessScope" ColumnName="AccessScope" />
-                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
-                <ScalarProperty Name="ErrorCode" ColumnName="ErrorCode" />
-                <ScalarProperty Name="Expands" ColumnName="Expands" />
-                <ScalarProperty Name="Sorting" ColumnName="Sorting" />
-                <ScalarProperty Name="Select" ColumnName="Select" />
-                <ScalarProperty Name="Filters" ColumnName="Filters" />
-                <ScalarProperty Name="DACName" ColumnName="DACName" />
-                <ScalarProperty Name="GIName" ColumnName="GIName" />
-                <ScalarProperty Name="AuthenticationType" ColumnName="AuthenticationType" />
-                <ScalarProperty Name="SessionID" ColumnName="SessionID" />
-                <ScalarProperty Name="SiteURL" ColumnName="SiteURL" />
-                <ScalarProperty Name="TypeOfRequest" ColumnName="TypeOfRequest" />
-                <ScalarProperty Name="IsAcumaticaRequest" ColumnName="IsAcumaticaRequest" />
-                <ScalarProperty Name="TypeOfWebService" ColumnName="TypeOfWebService" />
-                <ScalarProperty Name="Id" ColumnName="Id" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Logs">
             <EntityTypeMapping TypeName="WebRequestModel.Log">
               <MappingFragment StoreEntitySet="Log">
@@ -349,6 +265,33 @@
                 <ScalarProperty Name="KeyField" ColumnName="KeyField" />
                 <ScalarProperty Name="AuthenticationType" ColumnName="AuthenticationType" />
                 <ScalarProperty Name="SessionID" ColumnName="SessionID" />
+                <ScalarProperty Name="SiteURL" ColumnName="SiteURL" />
+                <ScalarProperty Name="TypeOfRequest" ColumnName="TypeOfRequest" />
+                <ScalarProperty Name="IsAcumaticaRequest" ColumnName="IsAcumaticaRequest" />
+                <ScalarProperty Name="TypeOfWebService" ColumnName="TypeOfWebService" />
+                <ScalarProperty Name="ProcGUID" ColumnName="ProcGUID" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ODatas">
+            <EntityTypeMapping TypeName="WebRequestModel.OData">
+              <MappingFragment StoreEntitySet="OData">
+                <ScalarProperty Name="Path" ColumnName="Path" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="NumberOfDetails" ColumnName="NumberOfDetails" />
+                <ScalarProperty Name="AccessScope" ColumnName="AccessScope" />
+                <ScalarProperty Name="ErrorMessage" ColumnName="ErrorMessage" />
+                <ScalarProperty Name="ErrorCode" ColumnName="ErrorCode" />
+                <ScalarProperty Name="Expands" ColumnName="Expands" />
+                <ScalarProperty Name="Sorting" ColumnName="Sorting" />
+                <ScalarProperty Name="Select" ColumnName="Select" />
+                <ScalarProperty Name="Top" ColumnName="Top" />
+                <ScalarProperty Name="Skip" ColumnName="Skip" />
+                <ScalarProperty Name="Filters" ColumnName="Filters" />
+                <ScalarProperty Name="DACName" ColumnName="DACName" />
+                <ScalarProperty Name="GIName" ColumnName="GIName" />
+                <ScalarProperty Name="AuthenticationType" ColumnName="AuthenticationType" />
                 <ScalarProperty Name="SiteURL" ColumnName="SiteURL" />
                 <ScalarProperty Name="TypeOfRequest" ColumnName="TypeOfRequest" />
                 <ScalarProperty Name="IsAcumaticaRequest" ColumnName="IsAcumaticaRequest" />

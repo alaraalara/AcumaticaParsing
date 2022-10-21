@@ -23,21 +23,22 @@ namespace AcumaticaValidations
 
 
 
-            Validation example = new Validation("name=AcuProx", "name=Validations");
+            Parsing example = new Parsing("name=AcuProx", "name=Validations");
             example.ClearData(true, true, true, true);
             example.ParseAndWriteData();
             
             Console.WriteLine("finished parsing!");
 
-            Console.WriteLine("odata validations started");
+           // Console.WriteLine("odata validations started");
             //example.ValidateOData();
             
-            Console.WriteLine("rest validations started");
-            example.ValidateRestAPI();
+            //Console.WriteLine("rest validations started");
+           // example.ValidateRestAPI();
 
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
             Console.WriteLine(elapsedMs);
+            //20740 milliseconds with addrange method (only in other data) for 100,000 entries 
 
 
 

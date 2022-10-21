@@ -5,11 +5,10 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="866e7b51751e49a19a93b41c31c85800" Name="Diagram1" ZoomLevel="101">
-        <EntityTypeShape EntityType="WebRequestModel.Other" Width="1.5" PointX="5.75" PointY="0.75" />
-        <EntityTypeShape EntityType="WebRequestModel.OData" Width="1.5" PointX="2.75" PointY="0.75" />
         <EntityTypeShape EntityType="WebRequestModel.Log" Width="1.5" PointX="0.625" PointY="1.25" />
-        <EntityTypeShape EntityType="WebRequestModel.OAuth" Width="1.5" PointX="0.75" PointY="7.75" />
-        <EntityTypeShape EntityType="WebRequestModel.RestAPI" Width="1.5" PointX="5.375" PointY="5.75" />
+        <EntityTypeShape EntityType="WebRequestModel.OAuth" Width="1.5" PointX="6.375" PointY="2.25" />
+        <EntityTypeShape EntityType="WebRequestModel.RestAPI" Width="1.5" PointX="3.125" PointY="2.375" />
+        <EntityTypeShape EntityType="WebRequestModel.OData" Width="1.5" PointX="8.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

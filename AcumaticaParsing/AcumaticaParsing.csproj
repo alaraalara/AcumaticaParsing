@@ -61,10 +61,8 @@
     <Compile Include="OData.cs">
       <DependentUpon>WebRequestModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="Other.cs">
-      <DependentUpon>WebRequestModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Parsing.cs" />
+    <Compile Include="ParsingImplementation.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RestAPI.cs">

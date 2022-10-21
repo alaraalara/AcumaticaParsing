@@ -15,15 +15,17 @@ namespace AcumaticaValidations
     public partial class OData
     {
         public long Id { get; set; }
+        public Nullable<System.Guid> ProcGUID { get; set; }
         public string TypeOfWebService { get; set; }
-        public Nullable<short> IsAcumaticaRequest { get; set; }
+        public Nullable<int> IsAcumaticaRequest { get; set; }
         public Nullable<short> TypeOfRequest { get; set; }
         public string SiteURL { get; set; }
-        public string SessionID { get; set; }
         public string AuthenticationType { get; set; }
         public string GIName { get; set; }
         public string DACName { get; set; }
         public string Filters { get; set; }
+        public string Skip { get; set; }
+        public string Top { get; set; }
         public string Select { get; set; }
         public string Sorting { get; set; }
         public string Expands { get; set; }
@@ -32,9 +34,6 @@ namespace AcumaticaValidations
         public string AccessScope { get; set; }
         public Nullable<short> NumberOfDetails { get; set; }
         public Nullable<System.TimeSpan> Duration { get; set; }
-        public Nullable<System.Guid> ProcGUID { get; set; }
-        public string Skip { get; set; }
-        public string Top { get; set; }
         public string Path { get; set; }
     }
 }

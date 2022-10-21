@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace AcumaticaValidations
 {
-    public partial class Validation
+    public partial class Parsing
     {
         //Check for repeated request???
         public void ValidateOData()
