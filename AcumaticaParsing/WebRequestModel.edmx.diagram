@@ -6,9 +6,9 @@
     <edmx:Diagrams>
       <Diagram DiagramId="866e7b51751e49a19a93b41c31c85800" Name="Diagram1" ZoomLevel="101">
         <EntityTypeShape EntityType="WebRequestModel.Log" Width="1.5" PointX="0.625" PointY="1.25" />
-        <EntityTypeShape EntityType="WebRequestModel.OAuth" Width="1.5" PointX="6.375" PointY="2.25" />
-        <EntityTypeShape EntityType="WebRequestModel.RestAPI" Width="1.5" PointX="3.125" PointY="2.375" />
-        <EntityTypeShape EntityType="WebRequestModel.OData" Width="1.5" PointX="8.375" PointY="0.75" />
+        <EntityTypeShape EntityType="WebRequestModel.RestAPI" Width="1.5" PointX="2.375" PointY="1.125" />
+        <EntityTypeShape EntityType="WebRequestModel.OData" Width="1.5" PointX="8.375" PointY="1.5" />
+        <EntityTypeShape EntityType="WebRequestModel.OAuth" Width="1.5" PointX="4.375" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

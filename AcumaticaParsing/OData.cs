@@ -31,7 +31,6 @@ namespace AcumaticaValidations
         public string Expands { get; set; }
         public string ErrorCode { get; set; }
         public string ErrorMessage { get; set; }
-        public string AccessScope { get; set; }
         public Nullable<short> NumberOfDetails { get; set; }
         public Nullable<System.TimeSpan> Duration { get; set; }
         public string Path { get; set; }

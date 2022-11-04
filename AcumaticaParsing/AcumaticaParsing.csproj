@@ -58,6 +58,7 @@
     <Compile Include="OAuth.cs">
       <DependentUpon>WebRequestModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="OAuthImplementation.cs" />
     <Compile Include="OData.cs">
       <DependentUpon>WebRequestModel.tt</DependentUpon>
     </Compile>

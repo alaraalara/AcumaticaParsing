@@ -21,8 +21,7 @@ namespace AcumaticaValidations
             var watch = System.Diagnostics.Stopwatch.StartNew();
 
 
-
-
+            //NOTE: Connection string should be added to App.Config file to be able to connect to database!
             Parsing example = new Parsing("name=AcuProx", "name=Validations");
             example.ClearData(true, true, true, true);
             example.ParseAndWriteData();

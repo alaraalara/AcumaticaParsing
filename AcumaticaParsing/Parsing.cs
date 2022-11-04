@@ -52,7 +52,6 @@ namespace AcumaticaValidations
                     {
                         throw new Exception("Database to write does not exist");
                     }
-                   
                     foreach (var data in databaseRead.Logs.AsNoTracking())
                     {
                         count++;
@@ -66,7 +65,6 @@ namespace AcumaticaValidations
                             ParseNullPath(databaseWrite, data);
                         }
                     }
-                    //databaseWrite.Logs.AddRange(OtherList);                    
                     databaseWrite.SaveChanges();
                 }
                 finally {
@@ -75,12 +73,12 @@ namespace AcumaticaValidations
             }
         }
 
-        //In order to improve performance and run out of storage (Save and dispose is called every 100 request)
+        //In order to improve performance and  prevent running out of storage (Save and dispose is called every 100 request)
         private WebRequestEntities RefreshContext(WebRequestEntities context, int count)
         {
 
             if (count % 100 == 0)
-            {
+            {                
                 context.SaveChanges();
                 context.Dispose();
                 context = new WebRequestEntities(databaseWriteString);
@@ -118,7 +116,6 @@ namespace AcumaticaValidations
                 }
 
             }
-            //What should be the specific fields for that????
             if (data.Path.Contains("identity"))
             {
                 OAuth oauth = CreateOAuth(data);
@@ -172,33 +169,43 @@ namespace AcumaticaValidations
         }
 
        
-
+        //Note: for large datasets, it may give out of memmory exception.
         //For testing purposes, prevents double entries. Reset database everytime parsin method is called!
         public void ClearData(bool log=false, bool odata=false, bool restapi=false, bool oauth = false)
         {
-            using (var databaseWrite = new WebRequestEntities(databaseWriteString))
+            WebRequestEntities databaseWrite = null ;
+            try
             {
-                if (log == true)
+                databaseWrite = new WebRequestEntities(databaseWriteString);
                 {
-                    databaseWrite.Logs.RemoveRange(databaseWrite.Logs);
+                    
+                    if (log == true)
+                    {
+                        databaseWrite.Logs.RemoveRange(databaseWrite.Logs);
+                    }
+                    if (odata == true)
+                    {
+                        databaseWrite.ODatas.RemoveRange(databaseWrite.ODatas);
+                    }
+                    if (restapi == true)
+                    {
+                        databaseWrite.RestAPIs.RemoveRange(databaseWrite.RestAPIs);
+                    }
+                    if (oauth == true)
+                    {
+                        databaseWrite.OAuths.RemoveRange(databaseWrite.OAuths);
+                    }
+                    databaseWrite.SaveChanges();
                 }
-                if (odata == true)
-                {
-                    databaseWrite.ODatas.RemoveRange(databaseWrite.ODatas);
-                }
-                if (restapi == true)
-                {
-                    databaseWrite.RestAPIs.RemoveRange(databaseWrite.RestAPIs);
-                }
-                if (oauth == true)
-                {
-                    databaseWrite.OAuths.RemoveRange(databaseWrite.OAuths);
-                }
-                
-                databaseWrite.SaveChanges();
+
+            }
+            finally
+            {
+                databaseWrite.Dispose();
             }
 
-                
+
+
             }
         
 
@@ -250,8 +257,6 @@ namespace AcumaticaValidations
             restapi.SessionID = ComposeSessionID(data);
             restapi.AuthenticationType = ComposeAuthenticaton(data, null, restapi);
             restapi.Filters = getParameters(data, "filter");
-            //add a keyfield to database table. After Entity name for ex Stock Item. after entity name if you add more fields it can also be considered as a filter
-            //then in the validations part, check if keyfield and filter parameters are applied and whether it acts as a repetition of filters
             restapi.Select = getParameters(data, "select");
             restapi.Expands = getParameters(data, "expand");
             restapi.Custom = getParameters(data, "custom");
@@ -287,8 +292,22 @@ namespace AcumaticaValidations
             oauth.Host = data.Host;
             oauth.Path = data.Path;
             oauth.ProcGUID = data.ProcGUID;
+            oauth.ClientId = searchStringInBodyOrQueryString(data, "client_id=");
+            oauth.GrantType = searchStringInBodyOrQueryString(data, "grant_type=");
+            oauth.ClientSecret = searchStringInBodyOrQueryString(data, "client_secret=");
+            oauth.Username = searchStringInBodyOrQueryString(data, "username=");
+            oauth.Password = searchStringInBodyOrQueryString(data, "username=");
+            oauth.Scope = searchStringInBodyOrQueryString(data, "scope=");
+            oauth.ResponseType = searchStringInBodyOrQueryString(data, "respone_type=");
+            oauth.RedirectUri = searchStringInBodyOrQueryString(data, "redirect_uri=");
+            oauth.AccessToken = searchStringInBodyOrQueryString(data, "\"access_token\":");
+            oauth.ExpiresIn = searchStringInBodyOrQueryString(data, "\"expires_in\":");
+            oauth.TokenType = searchStringInBodyOrQueryString(data, "\"token_type\":");
             return oauth;
+        
+        
         }
+        
         
 
 

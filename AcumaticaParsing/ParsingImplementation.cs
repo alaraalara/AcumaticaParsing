@@ -16,7 +16,7 @@ namespace AcumaticaValidations
             {
                 Regex regex = new Regex("/");
                 var pathElement = regex.Split(path);
-                if (path.Contains("Login") || path.Contains("logout") || path.Contains("login"))
+                if (path.Contains("Login") || path.Contains("logout") || path.Contains("login") || path.Contains("Logout"))
                 {
                     restapi.EndpointName = pathElement[3];
                     restapi.EndpointVersion = null;
@@ -45,13 +45,12 @@ namespace AcumaticaValidations
 
         }
 
-
-        //TEST IT!
+        //ALSO store the keyfield in the body of a request
         private string GetDocumentID(Log data)
         {
-            if (data.EventType == 2 && data.Body!=null && data.Body.Contains("\"id:\""))
+            if (data.EventType == 2 && data.Body!=null && data.Body.Contains("\"id\":"))
             {
-                var stringStartWithSessionID = data.Cookies.Substring(data.Cookies.IndexOf("\"id:\""));
+                var stringStartWithSessionID = data.Body.Substring(data.Body.IndexOf("\"id\":"));
                 var splitString = stringStartWithSessionID.Split(','); //Assuming it is always at the end 
                 return splitString[0];
             }
@@ -94,7 +93,9 @@ namespace AcumaticaValidations
         {
             if (data.QueryString != null)
             {
+                //IT IS  in the body of a requets
                 //Assuming that access scope comes after "?" symbol
+                //
                 if (data.QueryString.Contains("scope"))
                 {
                     var stringStartWithAccessScope = data.Cookies.Substring(data.Cookies.IndexOf("scope=") + 6);
